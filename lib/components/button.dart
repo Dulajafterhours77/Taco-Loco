@@ -19,7 +19,7 @@ class Button extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [primaryColor, Color.fromRGBO(
-                    primaryColor.red, primaryColor.green, primaryColor.blue, 0.75),],
+                    primaryColor.red, primaryColor.green, primaryColor.blue, 0.76),],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
           ),
