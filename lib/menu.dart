@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tacoloco/components/button.dart';
 import 'package:tacoloco/components/foodTile.dart';
+import 'package:tacoloco/food_data.dart';
 import 'package:tacoloco/models/food.dart';
 import 'package:tacoloco/themes/colors.dart';
 
@@ -22,8 +23,12 @@ class _MenuPageState extends State<MenuPage> {
     Food(name: 'Bacon, Egg, and Cheese\nBreakfast Burrito', price: '45', imagePath: 'lib/images/Bacon, Egg, and Cheese Breakfast Burrito.png', rating: '4.7'),
 
     //item 3
-    Food(name: 'Bacon, Potato, Egg and Cheese\nBreakfast Taco', price: '45', imagePath: 'lib/images/BACON, POTATO, EGG & CHEESE BREAKFAST TACO.png', rating: '4.7'),
+    Food(name: 'Bacon, Potato, Egg and\nCheese Breakfast Taco', price: '45', imagePath: 'lib/images/BACON, POTATO, EGG & CHEESE BREAKFAST TACO.png', rating: '4.7'),
   ];
+
+  void NavigateToFoodData(int index) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => FoodData(food: foodMenu[index])));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +50,7 @@ class _MenuPageState extends State<MenuPage> {
           //promo banner
           Container(
             decoration: BoxDecoration(
-              image: DecorationImage(
+              image: const DecorationImage(
                 image: AssetImage('lib/images/menuB.jpeg'),
                 fit: BoxFit.cover,
               ),
@@ -68,12 +73,11 @@ class _MenuPageState extends State<MenuPage> {
                     //redeem button
                     Button(
                       text: 'Redeem',
-                      ontap: () {},
+                      ontap: () {  },
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
-
               ],
             ),
           ),
@@ -105,7 +109,7 @@ class _MenuPageState extends State<MenuPage> {
                 hintStyle: TextStyle(
                   color: primaryColor.withOpacity(0.4),
                 ),
-                contentPadding: EdgeInsets.symmetric(vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(vertical: 8),
               ),
             ),
           ),
@@ -144,10 +148,11 @@ class _MenuPageState extends State<MenuPage> {
           Container(
             height: 250,
             child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: foodMenu.length,
               itemBuilder: (context, index) => FoodTile(
-                food: foodMenu[index], onTap: () {  },
+                food: foodMenu[index], onTap: () => NavigateToFoodData(index),
               ),
             ),
           ),
@@ -179,7 +184,7 @@ class _MenuPageState extends State<MenuPage> {
                       children: [
                         //name
                         Text(
-                          'name',
+                          foodMenu[0].name, // Replace with actual food item name
                           style: GoogleFonts.aBeeZee(fontSize: 18, color: Colors.white),
                         ),
 
