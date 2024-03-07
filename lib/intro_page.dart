@@ -29,7 +29,7 @@ class IntroPage extends StatelessWidget {
               Text(
                 'TacoLoco',
                 style: GoogleFonts.dmSerifDisplay(
-                  fontSize: 40,
+                  fontSize: 36,
                   fontWeight: FontWeight.bold,
                   color: primaryColor,
                 ),
