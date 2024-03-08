@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tacoloco/cart.dart';
 import 'package:tacoloco/intro_page.dart';
 import 'package:tacoloco/menu.dart';
+import 'package:tacoloco/models/shop.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => Shop(),
+      child: const MyApp(),
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +24,9 @@ class MyApp extends StatelessWidget {
       home: IntroPage(),
       routes: {
         '/intro': (context) => const IntroPage(),
-        '/menu': (context) => const MenuPage(),},
+        '/menu': (context) => const MenuPage(),
+        '/cart': (context) => const Cart(),
+      },
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:tacoloco/components/button.dart';
 import 'package:tacoloco/components/foodTile.dart';
 import 'package:tacoloco/food_data.dart';
-import 'package:tacoloco/models/food.dart';
+import 'package:tacoloco/models/shop.dart';
 import 'package:tacoloco/themes/colors.dart';
 
 class MenuPage extends StatefulWidget {
@@ -14,40 +15,42 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  // food menu
-  List<Food> foodMenu = [
-    //item 1
-    Food(name: 'Bacon, Egg, and Cheese\nBreakfast Taco', price: '45', imagePath: 'lib/images/Bacon, Egg, and ChEEse BrEakfast Taco.png', rating: '4.7'),
-
-    //item 2
-    Food(name: 'Bacon, Egg, and Cheese\nBreakfast Burrito', price: '45', imagePath: 'lib/images/Bacon, Egg, and Cheese Breakfast Burrito.png', rating: '4.7'),
-
-    //item 3
-    Food(name: 'Bacon, Potato, Egg and\nCheese Breakfast Taco', price: '45', imagePath: 'lib/images/BACON, POTATO, EGG & CHEESE BREAKFAST TACO.png', rating: '4.7'),
-  ];
-
   void NavigateToFoodData(int index) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => FoodData(food: foodMenu[index])));
+    final shop = context.read<Shop>();
+    final foodMenu = shop.foodMenu;
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FoodData(
+                  food: foodMenu[index],
+                )));
   }
 
   @override
   Widget build(BuildContext context) {
+    final shop = context.read<Shop>();
+    final foodMenu = shop.foodMenu;
+
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor,
+        foregroundColor: primaryColor,
         leading: Icon(
           Icons.menu,
-          color: primaryColor,
         ),
         title: Text(
           'Menu',
-          style: TextStyle(color: primaryColor),
         ),
+        actions: [
+          //cart button
+          IconButton(onPressed: (){
+            Navigator.pushNamed(context, '/cart');
+          }, icon: Icon(Icons.shopping_cart))
+        ],
       ),
       body: ListView(
         children: [
-          //promo banner
           Container(
             decoration: BoxDecoration(
               image: const DecorationImage(
@@ -57,11 +60,10 @@ class _MenuPageState extends State<MenuPage> {
               borderRadius: BorderRadius.circular(16),
             ),
             margin: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-            padding: const EdgeInsets.only(left:16, top: 25, bottom: 25,),
+            padding: const EdgeInsets.only(left: 16, top: 25, bottom: 25),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //promo message
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -70,10 +72,9 @@ class _MenuPageState extends State<MenuPage> {
                       style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 20),
                     ),
                     const SizedBox(height: 20),
-                    //redeem button
                     Button(
                       text: 'Redeem',
-                      ontap: () {  },
+                      ontap: () {},
                     ),
                   ],
                 ),
@@ -81,9 +82,7 @@ class _MenuPageState extends State<MenuPage> {
               ],
             ),
           ),
-
           const SizedBox(height: 10,),
-          //search bar
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: TextField(
@@ -113,9 +112,7 @@ class _MenuPageState extends State<MenuPage> {
               ),
             ),
           ),
-
           const SizedBox(height: 25,),
-          //menu items
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: RichText(
@@ -142,24 +139,19 @@ class _MenuPageState extends State<MenuPage> {
               ),
             ),
           ),
-
           const SizedBox(height: 10,),
-
           Container(
             height: 250,
             child: ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: foodMenu.length,
               itemBuilder: (context, index) => FoodTile(
-                food: foodMenu[index], onTap: () => NavigateToFoodData(index),
+                food: foodMenu[index],
+                onTap: () => NavigateToFoodData(index),
               ),
             ),
           ),
-
           const SizedBox(height: 25,),
-          //popular items
-
           Container(
             decoration: BoxDecoration(
               color: primaryColor.withAlpha((primaryColor.alpha * 0.9).round()),
@@ -172,34 +164,25 @@ class _MenuPageState extends State<MenuPage> {
               children: [
                 Row(
                   children: [
-                    //image
                     Image.asset(
                       'lib/images/taco-truck.png',
                       height: 60,
                     ),
-
                     const SizedBox(width: 20,),
-                    //name + price
                     Column(
                       children: [
-                        //name
                         Text(
                           foodMenu[0].name, // Replace with actual food item name
-                          style: GoogleFonts.aBeeZee(fontSize: 18, color: Colors.white),
+                          style: GoogleFonts.aBeeZee(fontSize: 14, color: Colors.white),
                         ),
-
                         const SizedBox(height: 10,),
-                        //price
-                        const Text(
-                          '\$29.00',
+                        const Text('\$29.00',
                           style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
                         ),
                       ],
                     ),
                   ],
                 ),
-
-                //heart
                 const Icon(
                   Icons.favorite_outline,
                   color: Colors.white,

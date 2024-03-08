@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:tacoloco/components/button.dart';
 import 'package:tacoloco/models/food.dart';
+import 'package:tacoloco/models/shop.dart';
 import 'package:tacoloco/themes/colors.dart';
 
 class FoodData extends StatefulWidget {
@@ -28,13 +30,41 @@ class _FoodDataState extends State<FoodData> {
   //increment quantity
   void incrementQuantity(){
     setState(() {
-      quantityCount++;
-    });
+  setState(() {
+    quantityCount++;
+  });
+});
   }
 
   //add to cart
   void addtocart(){
+    //only add to cart if there is something in the cart
+    if (quantityCount>0){
+      //get access to shop
+      final shop = context.read<Shop>();
 
+      //add to cart
+      shop.addtocart(widget.food, quantityCount);
+
+      //successful message
+      showDialog(context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          backgroundColor: primaryColor,
+          content: Text("Successfully added to the cart.", style: TextStyle(color: Colors.white),textAlign: TextAlign.center,),
+          actions: [
+            IconButton(onPressed: (){
+
+              //pop once to remove dialog box
+              Navigator.pop(context);
+
+              //pop again to got previous screen
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.done, color: Colors.white,))
+          ],
+      ),);
+    }
   }
 
   @override
